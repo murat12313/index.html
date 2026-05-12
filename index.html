@@ -625,7 +625,9 @@ async function connectWallet() {
 
   } catch(e) {
     console.error(e);
-    alert("Cüzdan bağlanırken hata: " + e.message);
+    let errorStr = e.message || String(e);
+    if (typeof e === 'object') errorStr = JSON.stringify(e, Object.getOwnPropertyNames(e));
+    alert("Cüzdan bağlanırken detaylı hata: " + errorStr);
   }
 }
 
