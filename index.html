@@ -411,7 +411,7 @@
 </div>
 
 <!-- ethers.js v5 -->
-<script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <script>
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
 // DEPLOY ETTİKTEN SONRA bu adresi güncelle:
@@ -589,6 +589,10 @@ let provider, signer, contract, walletAddress;
 document.getElementById("connectBtn").onclick = connectWallet;
 
 async function connectWallet() {
+  if (typeof window.ethers === 'undefined') {
+    alert("Hata: Ethers kütüphanesi yüklenemedi! İnternetini veya reklam engelleyicini kontrol et.");
+    return;
+  }
   if (!window.ethereum) {
     alert("Rabby Wallet bulunamadı! Lütfen Rabby yükle.");
     return;
@@ -608,6 +612,10 @@ async function connectWallet() {
 
     signer = provider.getSigner();
     walletAddress = await signer.getAddress();
+    if (!walletAddress) {
+      alert("Hata: Cüzdan adresi alınamadı (boş döndü).");
+      return;
+    }
 
     const short = walletAddress.slice(0,6) + "..." + walletAddress.slice(-4);
     document.getElementById("connectBtn").style.display = "none";
